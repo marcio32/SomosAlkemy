@@ -1,6 +1,6 @@
 ﻿namespace SomosAlkemy.Repository
 {
-    public class Class
+    public class Data
     {
     }
 }
