@@ -1,3 +1,6 @@
+using Microsoft.EntityFrameworkCore;
+using SomosAlkemy.DataAccess;
+
 namespace SomosAlkemy
 {
     public class Program
@@ -12,6 +15,10 @@ namespace SomosAlkemy
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
+            builder.Services.AddDbContext<ContextDB>(options =>
+            {
+                options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
+            });
 
             var app = builder.Build();
 
