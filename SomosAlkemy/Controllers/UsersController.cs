@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using SomosAlkemy.DTOs;
+using SomosAlkemy.Services;
 
 namespace SomosAlkemy.Controllers
 {
@@ -8,33 +9,20 @@ namespace SomosAlkemy.Controllers
     [ApiController]
     public class UsersController : ControllerBase
     {
+        private readonly IUnitOfWork _unitOfWork;
+
+        public UsersController(IUnitOfWork unitOfWork)
+        {
+            _unitOfWork = unitOfWork;
+        }
 
         [HttpGet]
-        public ActionResult GetAll()
+        public async Task<IActionResult> GetAll()
         {
-            return Ok("Marcio;Rosario;Pepe");
+            var users = await _unitOfWork.UserRepository.GetAll();
+
+            return Ok(users);
         }
-
-        [HttpPost]
-        public ActionResult AgregarUsuario(UserLoginDTO userloginDTO)
-        {
-            return Ok(userloginDTO);
-        }
-
-
-        [HttpPut]
-        public ActionResult EditarUsuario(UserLoginDTO userloginDTO)
-        {
-            return Ok(userloginDTO);
-        }
-
-        [HttpDelete]
-        public ActionResult EliminarUsuario(int id)
-        {
-            return Ok("Eliminado");
-        }
-
-
 
     }
 }

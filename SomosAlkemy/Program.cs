@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using SomosAlkemy.DataAccess;
+using SomosAlkemy.Services;
 
 namespace SomosAlkemy
 {
@@ -19,6 +20,7 @@ namespace SomosAlkemy
             {
                 options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
             });
+            builder.Services.AddScoped<IUnitOfWork, UnitOfWorkService>();
 
             var app = builder.Build();
 
