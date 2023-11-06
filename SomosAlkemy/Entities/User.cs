@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using SomosAlkemy.DTOs;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace SomosAlkemy.Entities
@@ -22,5 +23,16 @@ namespace SomosAlkemy.Entities
         public string Email { get; set; }
         [Column("user_isDeleted")]
         public bool IsDeleted { get; set; }
+
+        public static implicit operator User(UserRegisterDTO v)
+        {
+            var user = new User();
+            user.FirstName = v.FirstName;
+            user.LastName = v.LastName;
+            user.Password = v.Password;
+            user.DNI = v.DNI;
+            user.Email = v.Email;
+            return user;
+        }
     }
 }
