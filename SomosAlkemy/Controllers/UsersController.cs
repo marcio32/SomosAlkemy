@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using SomosAlkemy.DTOs;
 using SomosAlkemy.Infrastructure;
@@ -6,6 +7,7 @@ using SomosAlkemy.Services;
 
 namespace SomosAlkemy.Controllers
 {
+    [Authorize(Policy = "Administradores")]
     [Route("api/[controller]")]
     [ApiController]
     public class UsersController : ControllerBase
@@ -24,6 +26,7 @@ namespace SomosAlkemy.Controllers
             return ResponseFactory.CreateSuccessResponse(200, await _unitOfWork.UserRepository.GetAll());
         }
 
+        [AllowAnonymous]
         [HttpPost]
         [Route("Register")]
         public async Task<IActionResult> Register(UserRegisterDTO userRegisterDTO)

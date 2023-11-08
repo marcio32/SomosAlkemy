@@ -1,6 +1,10 @@
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using SomosAlkemy.DataAccess;
 using SomosAlkemy.Services;
+using System.Security.Claims;
+using System.Text;
 
 namespace SomosAlkemy
 {
@@ -22,6 +26,20 @@ namespace SomosAlkemy
             });
             builder.Services.AddScoped<IUnitOfWork, UnitOfWorkService>();
 
+            builder.Services.AddAuthorization(option =>
+            {
+                option.AddPolicy("Administradores", policy => policy.RequireClaim(ClaimTypes.Role, "1", "2"));
+            });
+
+            builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(option => option.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters()
+            {
+                ValidateIssuerSigningKey = true,
+                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"])),
+                ValidateIssuer = false,
+                ValidateAudience = false
+            }) ;
+
+
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
@@ -33,8 +51,8 @@ namespace SomosAlkemy
 
             app.UseHttpsRedirection();
 
+            app.UseAuthentication();
             app.UseAuthorization();
-
 
             app.MapControllers();
 

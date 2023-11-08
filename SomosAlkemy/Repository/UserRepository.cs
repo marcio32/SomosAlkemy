@@ -89,5 +89,15 @@ namespace SomosAlkemy.Repository
         }
 
 
+        public async Task<User?> AuthenticateCredentials(UserLoginDTO userLoginDTO)
+        {
+            try
+            {
+                return await _contextDB.Users.FirstOrDefaultAsync(x=> x.Email == userLoginDTO.Email && x.Password == userLoginDTO.Password);
+            }
+            catch { return null; }
+        }
+
+
     }
 }

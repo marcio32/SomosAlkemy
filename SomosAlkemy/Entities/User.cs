@@ -1,4 +1,5 @@
 ﻿using SomosAlkemy.DTOs;
+using SomosAlkemy.Helpers;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -21,6 +22,8 @@ namespace SomosAlkemy.Entities
         public string DNI { get; set; }
         [Column("user_email", TypeName = "VARCHAR(100)")]
         public string Email { get; set; }
+        [Column("user_role")]
+        public int Role { get; set; }
         [Column("user_isDeleted")]
         public bool IsDeleted { get; set; }
 
@@ -29,7 +32,7 @@ namespace SomosAlkemy.Entities
             var user = new User();
             user.FirstName = v.FirstName;
             user.LastName = v.LastName;
-            user.Password = v.Password;
+            user.Password = PasswordEncryptHelper.EncryptPassword(v.Password);
             user.DNI = v.DNI;
             user.Email = v.Email;
             return user;
